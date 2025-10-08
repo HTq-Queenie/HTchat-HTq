@@ -721,6 +721,12 @@ if (wasAtBottom) {
 if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
   if (window.applyVipEffect) {
     window.applyVipEffect(msgData.effect);
+    // 10秒后自动恢复原状
+    setTimeout(() => {
+      if (msgData.effect && msgData.effect !== "none") {
+        if (window.removeVipEffect) window.removeVipEffect();
+      }
+    }, 10000); // 别人看到10秒钟
   }
 }
 
