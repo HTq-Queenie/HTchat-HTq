@@ -718,9 +718,10 @@ if (wasAtBottom) {
   newMsgTip.textContent = `有 ${unreadCount} 条新消息，点此查看`;
   newMsgTip.style.display = 'inline-block';
 }
-if (msgData.uid !== currentUserId && msgData.effect) {
-  // 别人发送消息时携带 effect 信息，播放他特效
-  applyVipEffect(msgData.effect);
+if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
+  if (window.applyVipEffect) {
+    window.applyVipEffect(msgData.effect);
+  }
 }
 
 });
