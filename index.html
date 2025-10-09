@@ -809,6 +809,7 @@ window.sendMsg = async function () {
 
     // 确保 VIP 状态稳定（避免 null）
 const vipLevelToSend = window.userVipLevel || "none";
+	  const effectToSend = window.activeEffect || "none";
 
     // ✅ 核心发送逻辑
 await push(messagesRef, {
@@ -818,7 +819,7 @@ await push(messagesRef, {
   time: Date.now(),
   avatar: avatarURL,
   vipLevel: vipLevelToSend,
-  effect: window.activeEffect || "none"
+ effect: effectToSend
 });
 
     // 清空输入框
