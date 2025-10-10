@@ -806,6 +806,7 @@ window.sendMsg = async function () {
 const vipLevelToSend = window.userVipLevel || "none";
 
     // ✅ 核心发送逻辑
+// 在 messagesRef.push 对象中添加 effect 字段
 await push(messagesRef, {
   uid: currentUserId,
   user: username,
@@ -813,7 +814,7 @@ await push(messagesRef, {
   time: Date.now(),
   avatar: avatarURL,
   vipLevel: vipLevelToSend,
-  effect: window.activeEffect || "none"
+  effect: window.activeEffect || "none"  // 确保发送特效信息
 });
 
     // 清空输入框
