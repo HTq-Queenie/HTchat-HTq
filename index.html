@@ -906,6 +906,25 @@ document.getElementById("saveBtn").onclick = async () => {
   alert("信息已保存！");
 };
 </script>
+			// 私聊功能
+window.startPrivateChat = function(targetUid, targetName) {
+  if (targetUid === currentUserId) {
+    alert('不能和自己私聊哦~');
+    return;
+  }
+  
+  const privateMsg = prompt(`发送私信给 ${targetName}：`);
+  if (privateMsg && privateMsg.trim()) {
+    // 发送私聊消息（在消息前添加私聊标识）
+    const privateText = `@${targetName} ${privateMsg.trim()}`;
+    msgInput.value = privateText;
+    
+    // 自动聚焦到输入框方便发送
+    msgInput.focus();
+    
+    alert(`私信已准备好，按回车发送给 ${targetName}`);
+  }
+};
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
