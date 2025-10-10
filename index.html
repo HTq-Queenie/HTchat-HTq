@@ -744,7 +744,7 @@ const onlineList = document.getElementById("onlineList");
 onValue(onlineUsersRef, (snapshot) => {
   onlineList.innerHTML = ""; 
   const now = Date.now();
-  const ACTIVE_TIMEOUT = 44000; // 修正为44秒（原440000太长了）
+  const ACTIVE_TIMEOUT = 300000; // 改为5分钟（300000毫秒）
 
   if (snapshot.exists()) {
     const users = snapshot.val();
