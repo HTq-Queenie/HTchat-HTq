@@ -269,7 +269,9 @@ document.addEventListener('touchstart', enableBgm, { once: true });
 ">	
                     <div class="container">
 
-<h2>HT 逝世聊天 ———— FIREBASE后端 US中部服务器 支持</h2>
+<h2>HT 逝世聊天 —— FIREBASE后端 US中部服务器 支持
+<a href="https://htcb-12c7.github.io/HT-chat/index.html" download>下载不会被呕桑封的本地版</a>
+</h2>
 
 <div id="chat-container" style="display:flex; width:100%; margin:auto; gap:10px;">
   <!-- ✅ 左侧在线用户列表 -->
@@ -718,14 +720,9 @@ if (wasAtBottom) {
   newMsgTip.textContent = `有 ${unreadCount} 条新消息，点此查看`;
   newMsgTip.style.display = 'inline-block';
 }
-if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
-  if (window.applyVipEffect) {
-    window.applyVipEffect(msgData.effect);
-    // 10秒后自动恢复原状
-    setTimeout(() => {
-        if (window.removeVipEffect) window.removeVipEffect();
-    }, 10000); // 别人看到10秒钟
-  }
+if (msgData.uid !== currentUserId && msgData.effect) {
+  // 别人发送消息时携带 effect 信息，播放他特效
+  applyVipEffect(msgData.effect);
 }
 
 });
@@ -807,7 +804,6 @@ window.sendMsg = async function () {
 
     // 确保 VIP 状态稳定（避免 null）
 const vipLevelToSend = window.userVipLevel || "none";
-	  const effectToSend = window.activeEffect || "none";
 
     // ✅ 核心发送逻辑
 await push(messagesRef, {
@@ -817,7 +813,7 @@ await push(messagesRef, {
   time: Date.now(),
   avatar: avatarURL,
   vipLevel: vipLevelToSend,
- effect: effectToSend
+  effect: window.activeEffect || "none"
 });
 
     // 清空输入框
@@ -960,7 +956,7 @@ if (auth.currentUser) {
 // 🔹 特效函数
 // 🔹 特效函数（优化版）
 // === 不卡死版 VIP 特效（替换同名函数） ===
-window.applyVipEffect = function(level) {
+function applyVipEffect(level) {
   removeVipEffect(); // 先干净地清理
 
   switch (level) {
