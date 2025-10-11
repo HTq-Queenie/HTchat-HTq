@@ -466,7 +466,24 @@ import {
 import {
   getStorage, ref as sRef, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
+// 私聊功能
+window.startPrivateChat = function(targetUid, targetName) {
+  if (targetUid === currentUserId) {
+    alert('不能和自己私聊哦~');
+    return;
+  }
+  
+  const privateMsg = prompt(`发送私信给 ${targetName}：`);
+  if (privateMsg && privateMsg.trim()) {
+    const privateText = `@${targetName} ${privateMsg.trim()}`;
+    const msgInput = document.getElementById('msg');
+    if (msgInput) {
+      msgInput.value = privateText;
+      msgInput.focus();
+      alert(`私信已准备好，按回车发送给 ${targetName}`);
+    }
+  }
+};
 // ✅ Firebase 配置
 const firebaseConfig = {
   apiKey: "AIzaSyCDKAAxNpKqcSsS2onwlKANl9tLmCy6UGo",
