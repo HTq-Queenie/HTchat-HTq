@@ -774,6 +774,29 @@ onValue(onlineUsersRef, (snapshot) => {
           <span style="color:#ccc;">${realname}</span><br>
           <span style="font-size:12px;color:#999;">${email}</span>
         </li>`;
+		// 短暂显示其他用户的特效
+function applyOtherUserEffect(effect) {
+  removeVipEffect(); // 先清理现有特效
+  
+  switch(effect) {
+    case 'vip':
+      applyVipEffect('vip');
+      setTimeout(removeVipEffect, 3000);
+      break;
+    case 'super':
+      applyVipEffect('super');
+      setTimeout(removeVipEffect, 3000);
+      break;
+    case 'supergod':
+      applyVipEffect('supergod');
+      setTimeout(removeVipEffect, 3000);
+      break;
+    case 'staff':
+      applyVipEffect('staff');
+      setTimeout(removeVipEffect, 3000);
+      break;
+  }
+}
     });
   } else {
     onlineList.innerHTML = "<li style='color:#aaa;'>暂无用户在线</li>";
