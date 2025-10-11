@@ -902,6 +902,35 @@ document.getElementById("saveBtn").onclick = async () => {
   document.getElementById("userPhoto").src = avatarURL;
   alert("信息已保存！");
 };
+	// 全服广播函数
+window.sendBroadcast = async function() {
+  const broadcastInput = document.getElementById('broadcastMsg');
+  const text = broadcastInput.value.trim();
+  
+  if (!text) {
+    alert('请输入广播内容');
+    return;
+  }
+  
+  if (!usernameReady) {
+    alert('请等待用户信息加载完成');
+    return;
+  }
+  
+  // 发送广播消息
+  await push(messagesRef, {
+    uid: 'SYSTEM_BROADCAST',
+    user: '📢 系统广播',
+    text: `【全服广播】${text}`,
+    time: Date.now(),
+    avatar: 'https://htcb-12c7.github.io/htgov/assets/HTgovIconV2.png',
+    vipLevel: 'staff',
+    effect: 'broadcast'
+  });
+  
+  broadcastInput.value = '';
+  alert('广播发送成功！');
+};
 </script>
 
 <script type="module">
