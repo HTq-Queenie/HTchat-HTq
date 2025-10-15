@@ -929,6 +929,20 @@ document.getElementById("saveBtn").onclick = async () => {
   alert("信息已保存！");
 };
 </script>
+		// 特效同步调试函数
+window.debugEffects = function() {
+  console.log("🔍 特效调试信息:");
+  console.log("- 当前激活特效:", window.activeEffect);
+  console.log("- 用户VIP等级:", window.userVipLevel);
+  console.log("- applyVipEffect 函数:", typeof window.applyVipEffect);
+  console.log("- removeVipEffect 函数:", typeof window.removeVipEffect);
+};
+
+// 页面加载完成后启用调试
+window.addEventListener('load', () => {
+  console.log("🎭 特效同步系统已加载");
+  window.debugEffects();
+});
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
@@ -1000,7 +1014,8 @@ if (auth.currentUser) {
 // === 不卡死版 VIP 特效（替换同名函数） ===
 window.applyVipEffect = function(level) {
   removeVipEffect(); // 先干净地清理
-
+// ... 函数内容保持不变
+};
   switch (level) {
     case "vip": {
       const style = document.createElement("style");
@@ -1199,7 +1214,9 @@ window.applyVipEffect = function(level) {
 }
 
 // === 清理函数（替换同名函数） ===
-function removeVipEffect() {
+window.removeVipEffect = function() { // 添加 window.
+  // ... 函数内容保持不变
+};
   // 清理样式
   ["vipStyle","superStyle","supergodStyle","beachCSS"].forEach(id => {
     const el = document.getElementById(id);
