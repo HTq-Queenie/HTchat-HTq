@@ -974,7 +974,7 @@ if (auth.currentUser) {
 // 🔹 特效函数
 // 🔹 特效函数（优化版）
 // === 不卡死版 VIP 特效（替换同名函数） ===
-function applyVipEffect(level) {
+window.applyVipEffect = function(level) {
   removeVipEffect(); // 先干净地清理
 
   switch (level) {
