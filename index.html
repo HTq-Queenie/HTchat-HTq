@@ -746,7 +746,9 @@ if (msgData.uid === "SYSTEM_BROADCAST" || msgData.effect === "broadcast") {
 
   // 特效同步 - 当收到别人带特效的消息时显示
   if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
-    console.log("🎭 收到特效消息:", msgData.effect, "来自:", msgData.user);
+  console.log("🎭 强制同步特效:", msgData.effect);
+  window.forceEffectSync(msgData.effect);
+}
     
     // 延迟一点应用特效，确保消息先显示
     setTimeout(() => {
@@ -942,6 +944,23 @@ window.addEventListener('load', () => {
   console.log("🎭 特效同步系统已加载");
   window.debugEffects();
 });
+			// 强制特效同步（备用方案）
+window.forceEffectSync = function(effectType) {
+  if (!window.applyVipEffect) {
+    console.error("❌ applyVipEffect 函数未定义");
+    return;
+  }
+  
+  removeVipEffect();
+  applyVipEffect(effectType);
+  
+  setTimeout(() => {
+    removeVipEffect();
+    if (window.activeEffect) {
+      applyVipEffect(window.activeEffect);
+    }
+  }, 3000);
+};
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
