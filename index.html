@@ -734,9 +734,34 @@ if (wasAtBottom) {
   newMsgTip.textContent = `有 ${unreadCount} 条新消息，点此查看`;
   newMsgTip.style.display = 'inline-block';
 }
-if (msgData.uid !== currentUserId && msgData.effect) {
-  // 别人发送消息时携带 effect 信息，播放他特效
-  applyVipEffect(msgData.effect);
+// 特效同步 - 当收到别人带特效的消息时显示
+if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
+  console.log("🎭 收到他人特效:", msgData.effect, "来自:", msgData.user);
+  
+  // 立即应用发送者的特效
+  setTimeout(() => {
+    if (window.applyVipEffect) {
+      // 保存当前自己的特效
+      const myCurrentEffect = window.activeEffect;
+      
+      // 应用发送者的特效
+      window.applyVipEffect(msgData.effect);
+      
+      // 3秒后恢复自己的特效
+      setTimeout(() => {
+        if (window.removeVipEffect) {
+          window.removeVipEffect();
+        }
+        // 如果自己原本有特效，重新应用
+        if (myCurrentEffect && window.applyVipEffect) {
+          window.applyVipEffect(myCurrentEffect);
+          window.activeEffect = myCurrentEffect;
+        } else {
+          window.activeEffect = null;
+        }
+      }, 3000);
+    }
+  }, 100);
 }
 if (msgData.uid === "SYSTEM_BROADCAST" || msgData.effect === "broadcast") {
   showBroadcast(msgData.text);
@@ -931,39 +956,7 @@ document.getElementById("saveBtn").onclick = async () => {
   alert("信息已保存！");
 };
 </script>
-</script>// 特效同步调试函数
-window.debugEffects = function() {
-  console.log("🔍 特效调试信息:");
-  console.log("- 当前激活特效:", window.activeEffect);
-  console.log("- 用户VIP等级:", window.userVipLevel);
-  console.log("- applyVipEffect 函数:", typeof window.applyVipEffect);
-  console.log("- removeVipEffect 函数:", typeof window.removeVipEffect);
-};
 
-			// 页面加载完成后启用调试
-window.addEventListener('load', () => {
-  console.log("🎭 特效同步系统已加载");
-  window.debugEffects();
-});
-
-// 强制特效同步（备用方案）
-window.forceEffectSync = function(effectType) {
-  if (!window.applyVipEffect) {
-    console.error("❌ applyVipEffect 函数未定义");
-    return;
-  }
-  
-  removeVipEffect();
-  applyVipEffect(effectType);
-  
-  setTimeout(() => {
-    removeVipEffect();
-    if (window.activeEffect) {
-      applyVipEffect(window.activeEffect);
-    }
-  }, 3000);
-};
-</script>
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
