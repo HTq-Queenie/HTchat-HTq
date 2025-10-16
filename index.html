@@ -930,6 +930,7 @@ document.getElementById("saveBtn").onclick = async () => {
   document.getElementById("userPhoto").src = avatarURL;
   alert("信息已保存！");
 };
+</script>
 </script>// 特效同步调试函数
 window.debugEffects = function() {
   console.log("🔍 特效调试信息:");
@@ -939,12 +940,13 @@ window.debugEffects = function() {
   console.log("- removeVipEffect 函数:", typeof window.removeVipEffect);
 };
 
-// 页面加载完成后启用调试
+			// 页面加载完成后启用调试
 window.addEventListener('load', () => {
   console.log("🎭 特效同步系统已加载");
   window.debugEffects();
 });
-			// 强制特效同步（备用方案）
+
+// 强制特效同步（备用方案）
 window.forceEffectSync = function(effectType) {
   if (!window.applyVipEffect) {
     console.error("❌ applyVipEffect 函数未定义");
@@ -961,6 +963,7 @@ window.forceEffectSync = function(effectType) {
     }
   }, 3000);
 };
+</script>
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
