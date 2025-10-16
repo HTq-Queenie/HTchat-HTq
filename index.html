@@ -734,10 +734,7 @@ if (wasAtBottom) {
   newMsgTip.textContent = `有 ${unreadCount} 条新消息，点此查看`;
   newMsgTip.style.display = 'inline-block';
 }
-// 特效同步 - 当收到别人带特效的消息时显示
-if (msgData.uid !== currentUserId && msgData.effect && msgData.effect !== "none") {
-  console.log("🎭 收到他人特效:", msgData.effect, "来自:", msgData.user);
-  
+
   // 立即应用发送者的特效
   setTimeout(() => {
     if (window.applyVipEffect) {
