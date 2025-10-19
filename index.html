@@ -1501,3 +1501,61 @@ window.addEventListener("load", () => {
 </script>
         </body>
         </html>
+<!-- bug-->
+<script>
+	  window.applyVipEffect = function (type) {
+    const effect = document.createElement("div");
+    effect.style.position = "fixed";
+    effect.style.left = "0";
+    effect.style.top = "0";
+    effect.style.width = "100vw";
+    effect.style.height = "100vh";
+    effect.style.pointerEvents = "none";
+    effect.style.zIndex = "9999";
+    effect.style.transition = "opacity 1s ease-out";
+		      if (type === "vip_flare") {
+      effect.innerHTML = `<div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,140,0,0.4),transparent 70%);animation:flash 1s ease-out;"> </div>`;
+    } else if (type === "vip_burst") {
+      effect.innerHTML = `<div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,0,0.5),transparent 80%);animation:burst 1.5s ease-out;"> </div>`;
+    } else if (type === "blue_wave") {
+      effect.innerHTML = `<div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(0,200,255,0.3),transparent 80%);animation:wave 1.2s ease-out;"> </div>`;
+    } else {
+      return; // 没特效就不执行
+    }
+
+    document.body.appendChild(effect);
+		      setTimeout(() => {
+      effect.style.opacity = "0";
+      setTimeout(() => effect.remove(), 1000);
+    }, 800);
+  };  window.sendMsg = async function () {
+    const msgInput = document.getElementById("msg");
+    const text = msgInput.value.trim();
+    if (!text) return;
+
+    const user = auth.currentUser;
+    if (!user) {
+      alert("请先登录！");
+      return;
+    }
+		      const nickname = document.getElementById("userNickname")?.value || user.email;
+    const avatar = document.getElementById("userPhotoPreview")?.src || "https://htcb-12c7.github.io/htgov/assets/login-placeholder.svg";
+    const userDataSnap = await get(ref(db, "users/" + user.uid));
+    const vipLevel = userDataSnap.exists() ? userDataSnap.val().vipLevel || "none" : "none";
+		      let effectType = null;
+    if (vipLevel === "super") effectType = "vip_flare";
+    else if (vipLevel === "supergod") effectType = "vip_burst";
+    else if (vipLevel === "staff") effectType = "blue_wave";
+		      await push(ref(db, "messages"), {
+      uid: user.uid,
+      user: nickname,
+      text,
+      time: Date.now(),
+      avatar,
+      vipLevel,
+      effect: effectType, 
+    });
+		   if (effectType) applyVipEffect(effectType);
+  msgInput.value = "";
+  };
+</script>
